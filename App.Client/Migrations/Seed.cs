@@ -28,7 +28,7 @@ namespace App.Client.Migrations
             var user = userManager.FindByName(name);
             if (user == null)
             {
-                user = new ApplicationUser { UserName = name, Email = name };
+                user = new ApplicationUser { UserName = name, Email = name, EmailConfirmed = true};
                 var createUser = userManager.Create(user, pwd);
                 createUser = userManager.SetLockoutEnabled(user.Id, false);
             }
