@@ -1,0 +1,59 @@
+﻿@model App.Client.ViewModels.AdminVm.EditUser
+@{
+    ViewBag.Title = "Edit User";
+}
+<div class="container-fluid">
+    <div class="body-content">
+        <div id="page">
+            @Html.Partial("_Alert")
+            <div class="well">
+                <h4>
+                    <span>Edit User - <b>@Model.UserName</b></span>
+                </h4>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-3">
+                    @using (Html.BeginForm("Edit", "User", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            @Html.Label("Roles")
+                            <div class="well">
+                                @foreach (var role in (Model.RolesList))
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="SelectedRole" value="@role.Value" checked="@role.Selected" />
+                                            @Html.Label(role.Value)
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Configuration")
+                            <div class="well">
+                                <div class="checkbox">
+                                    <label>
+                                        @Html.CheckBoxFor(m => m.EmailConfirmed)
+                                        @Html.LabelFor(m => m.EmailConfirmed)
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <hr />
+                            <div class="pull-right">
+                                <a href="@Url.Action("Index", "User")" class="btn btn btn-primary"><span class="fa fa-fw fa-lg fa-times"></span><span> Cancel</span></a>
+                                <button type="submit" class="btn btn-success"><span class="fa fa-fw fa-save"></span> Save</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

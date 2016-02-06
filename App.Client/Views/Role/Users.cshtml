@@ -1,0 +1,52 @@
+﻿@model Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+@{
+    ViewBag.Title = "Users In Role";
+}
+<div class="container-fluid">
+    <div class="body-content">
+        <div id="page">
+            @Html.Partial("_Alert")
+            <div class="well">
+                <h4>
+                    <span>Users in Role - <b>@Model.Name (@ViewBag.UserCount)</b></span>
+                </h4>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" style="margin-bottom: 0px;">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-3">ID</th>
+                                    <th class="col-md-9">Name</th>
+                                    <th class=""></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in @ViewBag.Users)
+                                {
+                                    <tr>
+                                        <td class="vert-align">
+                                            @user.Id
+                                        </td>
+                                        <td class="vert-align">
+                                            @user.UserName
+                                        </td>
+                                        <td class="vert-align">
+                                            <a href="@Url.Action("Edit", "User", new {id = user.Id})" class="btn btn-default"><span class="fa fa-fw fa-pencil"></span></a>
+                                            <a href="@Url.Action("ResetPassword", "User", new {id = user.Id})" class="btn btn-default"><span class="fa fa-fw fa-key"></span></a>
+                                            <a href="@Url.Action("Delete", "User", new {id = user.Id})" class="btn btn-default"><span class="fa fa-fw fa-trash"></span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <a href="@Url.Action("Index", "Role")" class="btn btn-primary pull-right"><span class="fa fa-fw fa-arrow-left"></span> Back to Roles</a>
+        </div>
+    </div>
+</div>

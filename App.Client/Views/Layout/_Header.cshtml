@@ -1,0 +1,66 @@
+﻿@model App.Client.ViewModels.CurrentUserVm
+<div class="navbar @ViewBag.Inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand"> @ViewBag.AppName</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            @if (Model.IsAuthenticated)
+            {
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="@Url.Action("About", "Home")" data-toggle="tooltip" data-placement="bottom" title="About"><span class="fa fa-fw fa-lg fa-info"></span><span class="hidden-sm hidden-md hidden-lg"> About</span></a></li>
+                    <li><a href="@Url.Action("Contact", "Home")" data-toggle="tooltip" data-placement="bottom" title="Contact"><span class="fa fa-fw fa-lg fa-envelope"></span><span class="hidden-sm hidden-md hidden-lg"> Contact</span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Model.IsAdmin)
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-fw fa-lg fa-wrench"></i><span class="hidden-sm hidden-md hidden-lg"> Admin</span>
+                                <i class="caret"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header">Accounts</li>
+                                <li class="divider"></li>
+                                <li><a href="@Url.Action("Index", "User")"> Users</a></li>
+                                <li><a href="@Url.Action("Create", "User")"> Create User</a></li>
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Permissions</li>
+                                <li class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Role")"> Roles</a></li>
+                                <li><a href="@Url.Action("Create", "Role")"> Create Role</a></li>
+                            </ul>
+                        </li>
+                    }
+                    <li class="dropdown">
+                        <a class="dropdown-toggle text-lowercase" data-toggle="dropdown" href="#">
+                            <i class="fa fa-fw fa-lg fa-user"></i> @Model.Username
+                            <i class="caret"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("ChangePassword", "Manage")"> Change Password</a></li>
+                            <li class="divider"></li>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoff-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-block btn-success"> Logoff</button>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="@Url.Action("Register", "Account")" data-toggle="tooltip" data-placement="bottom" title="Register"><span class="fa fa-fw fa-lg fa-cloud"></span><span class="hidden-sm hidden-md hidden-lg"> Register</span></a></li>
+                    <li><a href="@Url.Action("Login", "Account")" data-toggle="tooltip" data-placement="bottom" title="Login"><span class="fa fa-fw fa-lg fa-sign-in"></span><span class="hidden-sm hidden-md hidden-lg"> Login</span></a></li>
+                </ul>
+            }
+        </div>
+    </div>
+</div>
