@@ -161,9 +161,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Themes\Bootstrap\Default\app.css" />
+    <Content Include="Content\Themes\Bootstrap\Default\bootstrap-select.css" />
     <Content Include="Content\Themes\Bootstrap\Default\bs-theme.css" />
     <Content Include="Content\Themes\Bootstrap\Default\morris.css" />
     <Content Include="Content\Themes\Bootstrap\Flatly\app.css" />
+    <Content Include="Content\Themes\Bootstrap\Flatly\bootstrap-select.css" />
     <Content Include="Content\Themes\Bootstrap\Flatly\bs-theme.css" />
     <Content Include="Content\Themes\Bootstrap\Flatly\morris.css" />
     <Content Include="Content\Themes\KendoUi\Mobile\images\back.png" />
@@ -840,6 +842,8 @@
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\App\app.js" />
     <Content Include="Scripts\App\app-bs-config.js" />
+    <Content Include="Scripts\bootstrap-select.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Chart.js" />

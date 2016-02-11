@@ -18,7 +18,7 @@ namespace App.Client
             bundleCollection.Add(new ScriptBundle("~/bundles/app").Include(
                 "~/Scripts/App/*.js",
                 "~/Scripts/Chart.js",
-                "~/Scripts/Chart.js"));
+                "~/Scripts/Morris.js"));
 
             bundleCollection.Add(new ScriptBundle("~/bundles/kendo").Include(
                 "~/Scripts/KendoUi/kendo.ui.core.js"));
@@ -29,6 +29,7 @@ namespace App.Client
                 "~/Content/Themes/KendoUi/Web/kendo." + AppConfig.KendoTheme + ".css",
                 "~/Content/Themes/Bootstrap/" + AppConfig.BootstrapTheme + "/app.css",
                 "~/Content/Themes/Bootstrap/" + AppConfig.BootstrapTheme + "/morris.css",
+                "~/Content/Themes/Bootstrap/" + AppConfig.BootstrapTheme + "/bootstrap-select.css",
                 "~/Content/font-awesome.css"));
 
         }
