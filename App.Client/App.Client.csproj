@@ -1374,6 +1374,8 @@
     <Content Include="Scripts\KendoUi\Messages\kendo.messages.zh-CN.js" />
     <Content Include="Scripts\KendoUi\Messages\kendo.messages.zh-HK.js" />
     <Content Include="Scripts\KendoUi\Messages\kendo.messages.zh-TW.js" />
+    <Content Include="Scripts\knockout-3.4.0.debug.js" />
+    <Content Include="Scripts\knockout-3.4.0.js" />
     <Content Include="Scripts\morris.js" />
     <Content Include="Scripts\morris.min.js" />
     <Content Include="Web.config">

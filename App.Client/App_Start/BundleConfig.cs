@@ -12,6 +12,9 @@ namespace App.Client
                 "~/Scripts/jquery.unobtrusive-ajax*",
                 "~/Scripts/jquery-ui-*"));
 
+            bundleCollection.Add(new ScriptBundle("~/bundles/knockout").Include(
+               "~/Scripts/knockout-{version}.js"));
+
             bundleCollection.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/Scripts/bootstrap.js"));
 
