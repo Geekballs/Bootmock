@@ -7,7 +7,7 @@ namespace App.Client.DomainModels
     internal class NetworkAdapter
     {
         [Key, Required, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid ChasisId { get; set; }
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
 

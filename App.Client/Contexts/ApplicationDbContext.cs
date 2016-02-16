@@ -35,12 +35,12 @@ namespace App.Client.Contexts
 
             #region Demo Products
 
-            db.Entity<Chasis>().ToTable("Product-Chasis");
-            db.Entity<HardDrive>().ToTable("Product-HardDrive");
-            db.Entity<Memory>().ToTable("Product-Memory");
-            db.Entity<NetworkAdapter>().ToTable("Product-NetworkAdapter");
-            db.Entity<OperatingSystem>().ToTable("Product-OperatingSystem");
-            db.Entity<Environment>().ToTable("Product-Environment");
+            db.Entity<Chasis>().ToTable("Product-Chasis").Property(x => x.Id).HasColumnName("ChasisId");
+            db.Entity<HardDrive>().ToTable("Product-HardDrive").Property(x => x.Id).HasColumnName("HarDriveId");
+            db.Entity<Memory>().ToTable("Product-Memory").Property(x => x.Id).HasColumnName("MemoryId");
+            db.Entity<NetworkAdapter>().ToTable("Product-NetworkAdapter").Property(x => x.Id).HasColumnName("NetworkAdapterId");
+            db.Entity<OperatingSystem>().ToTable("Product-OperatingSystem").Property(x => x.Id).HasColumnName("OperatingSystemId"); ;
+            db.Entity<Environment>().ToTable("Product-Environment").Property(x => x.Id).HasColumnName("EnvironmentId");
 
             #endregion
         }
