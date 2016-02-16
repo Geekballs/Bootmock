@@ -21,14 +21,29 @@ namespace App.Client.Contexts
         {
             base.OnModelCreating(db);
             db.Conventions.Remove<PluralizingTableNameConvention>();
+
+            #region Identity
+
             db.Entity<IdentityUserClaim>().ToTable("Security-UserClaim").Property(x => x.Id).HasColumnName("ClaimId");
             db.Entity<IdentityUserRole>().ToTable("Security-UserRole");
             db.Entity<IdentityUserLogin>().ToTable("Security-UserLogin");
             db.Entity<IdentityRole>().ToTable("Security-Role").Property(x => x.Id).HasColumnName("RoleId");
             db.Entity<IdentityRole>().ToTable("Security-Role").Property(x => x.Name).HasColumnName("Title");
             db.Entity<ApplicationUser>().ToTable("Security-User").Property(x => x.Id).HasColumnName("UserId");
-   
+
+            #endregion
+
+            #region Demo Products
+
+            db.Entity<Chasis>().ToTable("Product-Chasis");
+            db.Entity<HardDrive>().ToTable("Product-HardDrive");
+            db.Entity<Memory>().ToTable("Product-Memory");
+            db.Entity<NetworkAdapter>().ToTable("Product-NetworkAdapter");
+            db.Entity<OperatingSystem>().ToTable("Product-OperatingSystem");
+            db.Entity<Environment>().ToTable("Product-Environment");
+
+            #endregion
         }
-  
+
     }
 }

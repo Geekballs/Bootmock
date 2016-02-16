@@ -1417,6 +1417,12 @@
     <Compile Include="Atttributes\Permit.cs" />
     <Compile Include="Contexts\ApplicationDbContext.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="DomainModels\Environment.cs" />
+    <Compile Include="DomainModels\Memory.cs" />
+    <Compile Include="DomainModels\OperatingSystem.cs" />
+    <Compile Include="DomainModels\HardDrive.cs" />
+    <Compile Include="DomainModels\NetworkAdapter.cs" />
+    <Compile Include="DomainModels\Chasis.cs" />
     <Compile Include="Managers\ApplicationSignInManager.cs" />
     <Compile Include="Managers\ApplicationRoleManager.cs" />
     <Compile Include="Managers\ApplicationUserManager.cs" />
