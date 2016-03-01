@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using App.Client.Contexts;
 using App.Client.DomainModels;
 using App.Client.Managers;
 using Microsoft.AspNet.Identity;
@@ -11,6 +12,12 @@ namespace App.Client.Controllers
 {
     public class BaseController : Controller
     {
+        #region Database Connections
+
+        public  ApplicationDbContext db = new ApplicationDbContext();
+
+        #endregion
+
         #region Identity Construct 
 
         private ApplicationUserManager _userManager;
