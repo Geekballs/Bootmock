@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using App.Client.Infastructure.Atttributes;
-using App.Client.Infastructure.Controllers;
 using App.Client.Infastructure.DomainModels;
 using App.Client.Infastructure.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
-namespace App.Client.Controllers
+namespace App.Client.Infastructure.Controllers
 {
-    [Permit]
+    [Authorize]
     public class AccountController : BaseController
     {
 

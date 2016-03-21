@@ -11,7 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace App.Client.Infastructure.Controllers
 {
-    [Permit(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [RoutePrefix("Admin/User")]
     public class UserController : BaseController
     {

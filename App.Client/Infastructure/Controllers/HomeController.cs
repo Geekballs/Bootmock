@@ -3,7 +3,7 @@ using App.Client.Infastructure.Atttributes;
 
 namespace App.Client.Infastructure.Controllers
 {
-    [Permit]
+    [Authorize]
     public class HomeController : BaseController
     {
         public ActionResult Index()

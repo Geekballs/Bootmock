@@ -12,7 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace App.Client.Infastructure.Controllers
 {
-    [Permit(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [RoutePrefix("Admin/Role")]
     public class RoleController : BaseController
     {

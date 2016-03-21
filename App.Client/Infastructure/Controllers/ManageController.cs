@@ -8,7 +8,7 @@ using Microsoft.AspNet.Identity;
 
 namespace App.Client.Infastructure.Controllers
 {
-    [Permit]
+    [Authorize]
     [RoutePrefix("Me")]
     public class ManageController : BaseController
     {
