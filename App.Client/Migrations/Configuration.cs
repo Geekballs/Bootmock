@@ -14,7 +14,7 @@ namespace App.Client.Migrations
         protected override void Seed(ApplicationDbContext ctx)
         {
             SeedData.DefaultUser(ctx);
-            SeedData.AuditData(ctx);
+            //SeedData.AuditData(ctx);
         }
     }
 }
