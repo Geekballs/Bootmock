@@ -4,9 +4,10 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using System;
-using App.Client.Contexts;
-using App.Client.DomainModels;
-using App.Client.Managers;
+using App.Client.Infastructure.Contexts;
+using App.Client.Infastructure.DomainModels;
+using App.Client.Infastructure.Managers;
+
 
 namespace App.Client
 {

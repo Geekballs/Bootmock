@@ -1,5 +1,5 @@
 /*!
- * Bootstrap-select v1.9.4 (http://silviomoreto.github.io/bootstrap-select)
+ * Bootstrap-select v1.10.0 (http://silviomoreto.github.io/bootstrap-select)
  *
  * Copyright 2013-2016 bootstrap-select
  * Licensed under MIT (https://github.com/silviomoreto/bootstrap-select/blob/master/LICENSE)
@@ -287,7 +287,7 @@
     this.init();
   };
 
-  Selectpicker.VERSION = '1.9.4';
+  Selectpicker.VERSION = '1.10.0';
 
   // part of this is duplicated in i18n/defaults-en_US.js. Make sure to update both.
   Selectpicker.DEFAULTS = {
@@ -327,6 +327,7 @@
     actionsBox: false,
     iconBase: 'glyphicon',
     tickIcon: 'glyphicon-ok',
+    showTick: false,
     template: {
       caret: '<span class="caret"></span>'
     },
@@ -344,6 +345,8 @@
       var that = this,
           id = this.$element.attr('id');
 
+      this.$element.addClass('bs-select-hidden');
+
       // store originalIndex (key) and newIndex (value) in this.liObj for fast accessibility
       // allows us to do this.$lis.eq(that.liObj[index]) instead of this.$lis.filter('[data-original-index="' + index + '"]')
       this.liObj = {};
@@ -358,8 +361,9 @@
       this.$menuInner = this.$menu.children('.inner');
       this.$searchbox = this.$menu.find('input');
 
-      if (this.options.dropdownAlignRight)
-        this.$menu.addClass('dropdown-menu-right');
+      this.$element.removeClass('bs-select-hidden');
+
+      if (this.options.dropdownAlignRight === true) this.$menu.addClass('dropdown-menu-right');
 
       if (typeof id !== 'undefined') {
         this.$button.attr('data-id', id);
@@ -428,8 +432,8 @@
 
     createDropdown: function () {
       // Options
-      // If we are multiple, then add the show-tick class by default
-      var multiple = this.multiple ? ' show-tick' : '',
+      // If we are multiple or showTick option is set, then add the show-tick class
+      var showTick = (this.multiple || this.options.showTick) ? ' show-tick' : '',
           inputGroup = this.$element.parent().hasClass('input-group') ? ' input-group-btn' : '',
           autofocus = this.autofocus ? ' autofocus' : '';
       // Elements
@@ -462,7 +466,7 @@
       '</div>'
           : '';
       var drop =
-          '<div class="btn-group bootstrap-select' + multiple + inputGroup + '">' +
+          '<div class="btn-group bootstrap-select' + showTick + inputGroup + '">' +
           '<button type="button" class="' + this.options.styleBase + ' dropdown-toggle" data-toggle="dropdown"' + autofocus + '>' +
           '<span class="filter-option pull-left"></span>&nbsp;' +
           '<span class="bs-caret">' +
@@ -661,6 +665,8 @@
           that.setDisabled(index, this.disabled || this.parentNode.tagName === 'OPTGROUP' && this.parentNode.disabled, $lis);
           that.setSelected(index, this.selected, $lis);
         });
+
+        this.togglePlaceholder();
       }
 
       this.tabIndex();
@@ -795,13 +801,24 @@
           // fall back to jQuery if getComputedStyle is not supported
           menuStyle = typeof getComputedStyle === 'function' ? getComputedStyle(menu) : false,
           $menu = menuStyle ? null : $(menu),
-          menuPadding = parseInt(menuStyle ? menuStyle.paddingTop : $menu.css('paddingTop')) +
-                        parseInt(menuStyle ? menuStyle.paddingBottom : $menu.css('paddingBottom')) +
-                        parseInt(menuStyle ? menuStyle.borderTopWidth : $menu.css('borderTopWidth')) +
-                        parseInt(menuStyle ? menuStyle.borderBottomWidth : $menu.css('borderBottomWidth')),
-          menuExtras =  menuPadding +
+          menuPadding = {
+            vert: parseInt(menuStyle ? menuStyle.paddingTop : $menu.css('paddingTop')) +
+                  parseInt(menuStyle ? menuStyle.paddingBottom : $menu.css('paddingBottom')) +
+                  parseInt(menuStyle ? menuStyle.borderTopWidth : $menu.css('borderTopWidth')) +
+                  parseInt(menuStyle ? menuStyle.borderBottomWidth : $menu.css('borderBottomWidth')),
+            horiz: parseInt(menuStyle ? menuStyle.paddingLeft : $menu.css('paddingLeft')) +
+                  parseInt(menuStyle ? menuStyle.paddingRight : $menu.css('paddingRight')) +
+                  parseInt(menuStyle ? menuStyle.borderLeftWidth : $menu.css('borderLeftWidth')) +
+                  parseInt(menuStyle ? menuStyle.borderRightWidth : $menu.css('borderRightWidth'))
+          },
+          menuExtras =  {
+            vert: menuPadding.vert +
                         parseInt(menuStyle ? menuStyle.marginTop : $menu.css('marginTop')) +
-                        parseInt(menuStyle ? menuStyle.marginBottom : $menu.css('marginBottom')) + 2;
+                        parseInt(menuStyle ? menuStyle.marginBottom : $menu.css('marginBottom')) + 2,
+            horiz: menuPadding.horiz +
+                        parseInt(menuStyle ? menuStyle.marginLeft : $menu.css('marginLeft')) +
+                        parseInt(menuStyle ? menuStyle.marginRight : $menu.css('marginRight')) + 2
+          }
 
       document.body.removeChild(newElement);
 
@@ -829,6 +846,7 @@
           $menuInner = this.$menuInner,
           $window = $(window),
           selectHeight = this.$newElement[0].offsetHeight,
+          selectWidth = this.$newElement[0].offsetWidth,
           liHeight = this.sizeInfo['liHeight'],
           headerHeight = this.sizeInfo['headerHeight'],
           searchHeight = this.sizeInfo['searchHeight'],
@@ -839,15 +857,22 @@
           menuExtras = this.sizeInfo['menuExtras'],
           notDisabled = this.options.hideDisabled ? '.disabled' : '',
           menuHeight,
+          menuWidth,
           getHeight,
+          getWidth,
           selectOffsetTop,
           selectOffsetBot,
-          posVert = function () {
-            selectOffsetTop = that.$newElement.offset().top - $window.scrollTop();
+          selectOffsetLeft,
+          selectOffsetRight,
+          getPos = function() {
+            var pos = that.$newElement.offset();
+            selectOffsetTop = pos.top - $window.scrollTop();
             selectOffsetBot = $window.height() - selectOffsetTop - selectHeight;
+            selectOffsetLeft = pos.left - $window.scrollLeft();
+            selectOffsetRight = $window.width() - selectOffsetLeft - selectWidth;
           };
 
-      posVert();
+      getPos();
 
       if (this.options.size === 'auto') {
         var getSize = function () {
@@ -865,25 +890,35 @@
               lisVisible = Array.prototype.filter ? Array.prototype.filter.call(lis, hasClass('hidden', false)) : that.$lis.not('.hidden'),
               optGroup = Array.prototype.filter ? Array.prototype.filter.call(lisVisible, hasClass('dropdown-header', true)) : lisVisible.filter('.dropdown-header');
 
-          posVert();
-          menuHeight = selectOffsetBot - menuExtras;
+          getPos();
+          menuHeight = selectOffsetBot - menuExtras.vert;
+          menuWidth = selectOffsetRight - menuExtras.horiz;
 
           if (that.options.container) {
             if (!$menu.data('height')) $menu.data('height', $menu.height());
             getHeight = $menu.data('height');
+            
+            if (!$menu.data('width')) $menu.data('width', $menu.width());
+            getWidth = $menu.data('width');
           } else {
             getHeight = $menu.height();
+            getWidth = $menu.width();
           }
 
           if (that.options.dropupAuto) {
-            that.$newElement.toggleClass('dropup', selectOffsetTop > selectOffsetBot && (menuHeight - menuExtras) < getHeight);
+            that.$newElement.toggleClass('dropup', selectOffsetTop > selectOffsetBot && (menuHeight - menuExtras.vert) < getHeight);
           }
+
           if (that.$newElement.hasClass('dropup')) {
-            menuHeight = selectOffsetTop - menuExtras;
+            menuHeight = selectOffsetTop - menuExtras.vert;
+          }
+
+          if (that.options.dropdownAlignRight === 'auto') {
+            $menu.toggleClass('dropdown-menu-right', selectOffsetLeft > selectOffsetRight && (menuWidth - menuExtras.horiz) < (getWidth - selectWidth));
           }
 
           if ((lisVisible.length + optGroup.length) > 3) {
-            minHeight = liHeight * 3 + menuExtras - 2;
+            minHeight = liHeight * 3 + menuExtras.vert - 2;
           } else {
             minHeight = 0;
           }
@@ -894,9 +929,9 @@
             'min-height': minHeight + headerHeight + searchHeight + actionsHeight + doneButtonHeight + 'px'
           });
           $menuInner.css({
-            'max-height': menuHeight - headerHeight - searchHeight - actionsHeight - doneButtonHeight - menuPadding + 'px',
+            'max-height': menuHeight - headerHeight - searchHeight - actionsHeight - doneButtonHeight - menuPadding.vert + 'px',
             'overflow-y': 'auto',
-            'min-height': Math.max(minHeight - menuPadding, 0) + 'px'
+            'min-height': Math.max(minHeight - menuPadding.vert, 0) + 'px'
           });
         };
         getSize();
@@ -905,7 +940,7 @@
       } else if (this.options.size && this.options.size != 'auto' && this.$lis.not(notDisabled).length > this.options.size) {
         var optIndex = this.$lis.not('.divider').not(notDisabled).children().slice(0, this.options.size).last().parent().index(),
             divLength = this.$lis.slice(0, optIndex + 1).filter('.divider').length;
-        menuHeight = liHeight * this.options.size + divLength * divHeight + menuPadding;
+        menuHeight = liHeight * this.options.size + divLength * divHeight + menuPadding.vert;
 
         if (that.options.container) {
           if (!$menu.data('height')) $menu.data('height', $menu.height());
@@ -916,7 +951,7 @@
 
         if (that.options.dropupAuto) {
           //noinspection JSUnusedAssignment
-          this.$newElement.toggleClass('dropup', selectOffsetTop > selectOffsetBot && (menuHeight - menuExtras) < getHeight);
+          this.$newElement.toggleClass('dropup', selectOffsetTop > selectOffsetBot && (menuHeight - menuExtras.vert) < getHeight);
         }
         $menu.css({
           'max-height': menuHeight + headerHeight + searchHeight + actionsHeight + doneButtonHeight + 'px',
@@ -924,7 +959,7 @@
           'min-height': ''
         });
         $menuInner.css({
-          'max-height': menuHeight - menuPadding + 'px',
+          'max-height': menuHeight - menuPadding.vert + 'px',
           'overflow-y': 'auto',
           'min-height': ''
         });
@@ -1007,14 +1042,25 @@
       });
     },
 
+    /**
+     * @param {number} index - the index of the option that is being changed
+     * @param {boolean} selected - true if the option is being selected, false if being deselected
+     * @param {JQuery} $lis - the 'li' element that is being modified
+     */
     setSelected: function (index, selected, $lis) {
       if (!$lis) {
+        this.togglePlaceholder(); // check if setSelected is being called by changing the value of the select
         $lis = this.findLis().eq(this.liObj[index]);
       }
 
       $lis.toggleClass('selected', selected);
     },
 
+    /**
+     * @param {number} index - the index of the option that is being disabled
+     * @param {boolean} disabled - true if the option is being disabled, false if being enabled
+     * @param {JQuery} $lis - the 'li' element that is being modified
+     */
     setDisabled: function (index, disabled, $lis) {
       if (!$lis) {
         $lis = this.findLis().eq(this.liObj[index]);
@@ -1053,6 +1099,11 @@
       });
     },
 
+    togglePlaceholder: function () {
+      var value = this.$element.val();
+      this.$button.toggleClass('bs-placeholder', value === null || value === '');
+    },
+
     tabIndex: function () {
       if (this.$element.data('tabindex') !== this.$element.attr('tabindex') && 
         (this.$element.attr('tabindex') !== -98 && this.$element.attr('tabindex') !== '-98')) {
@@ -1082,30 +1133,32 @@
 
       this.$button.on('click', function () {
         that.setSize();
-        that.$element.on('shown.bs.select', function () {
-          if (!that.options.liveSearch && !that.multiple) {
-            that.$menuInner.find('.selected a').focus();
-          } else if (!that.multiple) {
-            var selectedIndex = that.liObj[that.$element[0].selectedIndex];
+      });
 
-            if (typeof selectedIndex !== 'number' || that.options.size === false) return;
+      this.$element.on('shown.bs.select', function () {
+        if (!that.options.liveSearch && !that.multiple) {
+          that.$menuInner.find('.selected a').focus();
+        } else if (!that.multiple) {
+          var selectedIndex = that.liObj[that.$element[0].selectedIndex];
 
-            // scroll to selected option
-            var offset = that.$lis.eq(selectedIndex)[0].offsetTop - that.$menuInner[0].offsetTop;
-            offset = offset - that.$menuInner[0].offsetHeight/2 + that.sizeInfo.liHeight/2;
-            that.$menuInner[0].scrollTop = offset;
-          }
-        });
+          if (typeof selectedIndex !== 'number' || that.options.size === false) return;
+
+          // scroll to selected option
+          var offset = that.$lis.eq(selectedIndex)[0].offsetTop - that.$menuInner[0].offsetTop;
+          offset = offset - that.$menuInner[0].offsetHeight/2 + that.sizeInfo.liHeight/2;
+          that.$menuInner[0].scrollTop = offset;
+        }
       });
 
       this.$menuInner.on('click', 'li a', function (e) {
         var $this = $(this),
             clickedIndex = $this.parent().data('originalIndex'),
             prevValue = that.$element.val(),
-            prevIndex = that.$element.prop('selectedIndex');
+            prevIndex = that.$element.prop('selectedIndex'),
+            triggerChange = true;
 
         // Don't close on multi choice menu
-        if (that.multiple) {
+        if (that.multiple && that.options.maxOptions !== 1) {
           e.stopPropagation();
         }
 
@@ -1165,11 +1218,13 @@
 
                   if (maxOptions && maxReached) {
                     $notify.append($('<div>' + maxTxt + '</div>'));
+                    triggerChange = false;
                     that.$element.trigger('maxReached.bs.select');
                   }
 
                   if (maxOptionsGrp && maxReachedGrp) {
                     $notify.append($('<div>' + maxTxtGrp + '</div>'));
+                    triggerChange = false;
                     that.$element.trigger('maxReachedGrp.bs.select');
                   }
 
@@ -1185,17 +1240,20 @@
             }
           }
 
-          if (!that.multiple) {
+          if (!that.multiple || (that.multiple && that.options.maxOptions === 1)) {
             that.$button.focus();
           } else if (that.options.liveSearch) {
             that.$searchbox.focus();
           }
 
           // Trigger select 'change'
-          if ((prevValue != that.$element.val() && that.multiple) || (prevIndex != that.$element.prop('selectedIndex') && !that.multiple)) {
-            that.$element.triggerNative('change');
-            // $option.prop('selected') is current option state (selected/unselected). state is previous option state.
-            that.$element.trigger('changed.bs.select', [clickedIndex, $option.prop('selected'), state]);
+          if (triggerChange) {
+            if ((prevValue != that.$element.val() && that.multiple) || (prevIndex != that.$element.prop('selectedIndex') && !that.multiple)) {
+              // $option.prop('selected') is current option state (selected/unselected). state is previous option state.
+              that.$element
+                .trigger('changed.bs.select', [clickedIndex, $option.prop('selected'), state])
+                .triggerNative('change');
+            }
           }
         }
       });
@@ -1245,7 +1303,6 @@
         } else {
           that.deselectAll();
         }
-        that.$element.triggerNative('change');
       });
 
       this.$element.change(function () {
@@ -1356,9 +1413,17 @@
       this.findLis();
 
       var $options = this.$element.find('option'),
-          $lisVisible = this.$lis.not('.divider, .dropdown-header, .disabled, .hidden').toggleClass('selected', status),
+          $lisVisible = this.$lis.not('.divider, .dropdown-header, .disabled, .hidden'),
           lisVisLen = $lisVisible.length,
           selectedOptions = [];
+          
+      if (status) {
+        if ($lisVisible.filter('.selected').length === $lisVisible.length) return;
+      } else {
+        if ($lisVisible.filter('.selected').length === 0) return;
+      }
+          
+      $lisVisible.toggleClass('selected', status);
 
       for (var i = 0; i < lisVisLen; i++) {
         var origIndex = $lisVisible[i].getAttribute('data-original-index');
@@ -1368,6 +1433,12 @@
       $(selectedOptions).prop('selected', status);
 
       this.render(false);
+
+      this.togglePlaceholder();
+
+      this.$element
+        .trigger('changed.bs.select')
+        .triggerNative('change');
     },
 
     selectAll: function () {
@@ -1376,6 +1447,14 @@
 
     deselectAll: function () {
       return this.changeAll(false);
+    },
+
+    toggle: function (e) {
+      e = e || window.event;
+      
+      if (e) e.stopPropagation();
+
+      this.$button.trigger('click');
     },
 
     keydown: function (e) {
@@ -1460,6 +1539,7 @@
           that.$button.trigger('click');
         }
         that.$searchbox.focus();
+        return;
       }
 
       if (that.options.liveSearch) {

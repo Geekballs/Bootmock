@@ -11,8 +11,6 @@ namespace App.Client
         public static readonly string CompanyName = ConfigurationManager.AppSettings["brand:CompanyName"];
         public static readonly string BootstrapTheme = ConfigurationManager.AppSettings["brand:BootstrapTheme"];
         public static readonly bool ThemeInverse = Convert.ToBoolean(ConfigurationManager.AppSettings["brand:ThemeInverse"]);
-        public static readonly string KendoTheme = ConfigurationManager.AppSettings["brand:KendoTheme"];
-
         public static readonly string DefaultUser = ConfigurationManager.AppSettings["seed:DefaultUser"];
         public static readonly string DefaultUserPassword = ConfigurationManager.AppSettings["seed:DefaultUserPassword"];
     }

@@ -1,4 +1,4 @@
-﻿@model App.Client.ViewModels.CurrentUserVm
+﻿@model App.Client.Infastructure.ViewModels.CurrentUserVm
 <div class="navbar @ViewBag.Inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="@Url.Action("Index", "Home")" class="navbar-brand"> @ViewBag.AppName</a>
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand"><span id="ajax-loader" class="fa fa-fw fa-lg fa-bolt"></span> @ViewBag.AppName</a>
         </div>
         <div class="navbar-collapse collapse">
             @if (Model.IsAuthenticated)
@@ -15,6 +15,15 @@
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="@Url.Action("About", "Home")" data-toggle="tooltip" data-placement="bottom" title="About"><span class="fa fa-fw fa-lg fa-info"></span><span class="hidden-sm hidden-md hidden-lg"> About</span></a></li>
                     <li><a href="@Url.Action("Contact", "Home")" data-toggle="tooltip" data-placement="bottom" title="Contact"><span class="fa fa-fw fa-lg fa-envelope"></span><span class="hidden-sm hidden-md hidden-lg"> Contact</span></a></li>
+                    @if (Model.IsAdmin || Model.IsDashboard)
+                    {
+                        <li><a href="@Url.Action("Dashboard", "Acme")" data-toggle="tooltip" data-placement="bottom" title="Dashboard"><span class="fa fa-fw fa-lg fa-flag"></span><span class="hidden-sm hidden-md hidden-lg"> Dashboard</span></a></li>  
+                    }
+                    @if (Model.IsAdmin || Model.IsInvestigate)
+                    {
+                        <li><a href="@Url.Action("GroupInformation", "Acme")" data-toggle="tooltip" data-placement="bottom" title="Group Information"><span class="fa fa-fw fa-lg fa-building"></span><span class="hidden-sm hidden-md hidden-lg"> Group Information</span></a></li>
+                    }
+                    <li><a id="dropdown-filter" href="#" style="display: none" data-toggle="tooltip" data-placement="bottom" title="Filter"><span class="fa fa-fw fa-lg fa-filter"></span><span class="hidden-sm hidden-md hidden-lg"> Filter</span></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (Model.IsAdmin)

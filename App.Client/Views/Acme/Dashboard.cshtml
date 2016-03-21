@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+<div class="container-fluid">
+    <div class="body-content">
+        <div id="page">
+            <div class="well">
+                <h4><b>Dashboard - <span class="header-value"></span></b></h4>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span><i class="fa fa-fw fa-line-chart"></i>&nbsp;Line Chart</span>
+                                </div>
+                                <div class="panel-body">
+                                </div>
+                            </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span><i class="fa fa-fw fa-area-chart"></i>&nbsp;Area Chart</span>
+                                </div>
+                                <div class="panel-body">
+                                </div>
+                            </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span><i class="fa fa-fw fa-table"></i>&nbsp;Table Data</span>
+                                </div>
+                                <div class="panel-body">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span><i class="fa fa-fw fa-users"></i>&nbsp;Small Table</span>
+                                </div>
+                                <div class="panel-body">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+
+        // variables
+        var headerValue = ('.header-value');
+
+        // default values
+        $(function () {
+
+            SetHeaderValue('Default Value');
+
+        });
+
+        // functions
+        function SetHeaderValue(val) {
+            $(headerValue).text(val);
+        }
+
+    </script>
+}

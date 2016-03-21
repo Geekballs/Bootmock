@@ -4,37 +4,41 @@ namespace App.Client
 {
     public class BundleConfig
     {
-        public static void RegisterBundles(BundleCollection bundleCollection)
+        public static void RegisterBundles(BundleCollection bc)
         {
-            bundleCollection.Add(new ScriptBundle("~/bundles/jquery").Include(
+            bc.Add(new StyleBundle("~/css/app").Include(
+                "~/Content/bs-theme-" + AppConfig.BootstrapTheme + ".css",
+                "~/Content/app.css",
+                "~/Content/font-awesome.css"));
+
+            bc.Add(new StyleBundle("~/css/chart").Include(
+                "~/Content/morris.css"));
+
+            bc.Add(new StyleBundle("~/css/util").Include(
+               "~/Content/bootstrap-select.css"));
+
+            bc.Add(new ScriptBundle("~/script/jquery").Include(
                 "~/Scripts/jquery-{version}.js",
                 "~/Scripts/jquery.validate*",
                 "~/Scripts/jquery.unobtrusive-ajax*",
                 "~/Scripts/jquery-ui-*"));
 
-            bundleCollection.Add(new ScriptBundle("~/bundles/knockout").Include(
-               "~/Scripts/knockout-{version}.js"));
-
-            bundleCollection.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            bc.Add(new ScriptBundle("~/script/bootstrap").Include(
                 "~/Scripts/bootstrap.js"));
 
-            bundleCollection.Add(new ScriptBundle("~/bundles/app").Include(
-                "~/Scripts/App/*.js",
-                "~/Scripts/Chart.js",
-                "~/Scripts/Morris.js"));
+            bc.Add(new ScriptBundle("~/script/util").Include(
+                "~/Scripts/handlebars.js",
+                "~/Scripts/mustache.js",
+                "~/Scripts/bootstrap-select.js",
+                "~/Scripts/moment.js"));
 
-            bundleCollection.Add(new ScriptBundle("~/bundles/kendo").Include(
-                "~/Scripts/KendoUi/kendo.ui.core.js"));
+            bc.Add(new ScriptBundle("~/script/chart").Include(
+                "~/Scripts/raphael.js",
+                "~/Scripts/chart.js",
+                "~/Scripts/morris.js"));
 
-            bundleCollection.Add(new StyleBundle("~/Content/app").Include(
-                "~/Content/Themes/Bootstrap/" + AppConfig.BootstrapTheme + "/bs-theme.css",
-                "~/Content/Themes/KendoUi/Web/kendo.common.core.css",
-                "~/Content/Themes/KendoUi/Web/kendo." + AppConfig.KendoTheme + ".css",
-                "~/Content/Themes/Bootstrap/" + AppConfig.BootstrapTheme + "/app.css",
-                "~/Content/Themes/Bootstrap/" + AppConfig.BootstrapTheme + "/morris.css",
-                "~/Content/Themes/Bootstrap/" + AppConfig.BootstrapTheme + "/bootstrap-select.css",
-                "~/Content/font-awesome.css"));
-
+            bc.Add(new ScriptBundle("~/script/app").Include(
+                "~/Scripts/App/*.js")); 
         }
     }
 }

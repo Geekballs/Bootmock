@@ -5,17 +5,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - @AppConfig.AppName</title>
-    @Styles.Render("~/Content/app")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/kendo")
+    @Styles.Render("~/css/app")
+    @Styles.Render("~/css/chart")
+    @Styles.Render("~/css/util")
 </head>
 <body>
-    @Html.Action("Header", "Layout")
+@Html.Action("Header", "Layout")
+<div id="alert-container"></div>
     @RenderBody()
-    @Html.Action("Footer", "Layout")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/app")
+@Html.Action("Footer", "Layout")
+@Scripts.Render("~/script/jquery")
+    @Scripts.Render("~/script/bootstrap")
+    @Scripts.Render("~/script/util")
+    @Scripts.Render("~/script/chart")
+    @Scripts.Render("~/script/app")
     @RenderSection("scripts", required: false)
 </body>
 </html>
